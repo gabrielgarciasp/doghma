@@ -15,4 +15,4 @@ app.use(helmet()); // cuidar dos headers
 app.use(bodyParser.urlencoded({ extended: false })); // transformar o body
 app.use(routers);
 
-app.listen(3000);
+app.listen(process.env.PORT);
