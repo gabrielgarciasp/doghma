@@ -4,12 +4,16 @@ const getAllUsers = async () => {
     const conn = await pool.getConnection();
     const [rows, fields] = await conn.execute('select * from users');
 
+    conn.release();
+
     return rows;
 };
 
 const getUser = async id => {
     const conn = await pool.getConnection();
     const [rows, fields] = await conn.execute('select * from users where id = ?', [id]);
+
+    conn.release();
 
     return rows;
 };
@@ -21,6 +25,8 @@ const createUser = async data => {
         data.email,
         data.password,
     ]);
+
+    conn.release();
 
     return getUser(rows.insertId);
 };
@@ -34,12 +40,16 @@ const updateUser = async (id, data) => {
         id,
     ]);
 
+    conn.release();
+
     return getUser(id);
 };
 
 const deleteUser = async id => {
     const conn = await pool.getConnection();
     const [rows] = await conn.execute('delete from users where id=?', [id]);
+
+    conn.release();
 
     return { message: 'deleted' };
 };
