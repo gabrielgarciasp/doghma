@@ -14,7 +14,7 @@ const app = express();
 
 app.use(
     cors({
-        exposedHeaders: ['Content-Range', 'X-Content-Range'],
+        exposedHeaders: ['Content-Range', 'X-Content-Range', 'X-Total-Count'],
         credentials: true,
     })
 ); // liberar acesso
