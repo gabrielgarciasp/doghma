@@ -12,7 +12,11 @@ const app = express();
 //     next()
 // })
 
-app.use(cors()); // liberar acesso
+app.use(
+    cors({
+        exposedHeaders: ['Content-Range', 'X-Content-Range'],
+    })
+); // liberar acesso
 // app.use(helmet()); // cuidar dos headers
 app.use(bodyParser.urlencoded({ extended: false })); // transformar o body
 app.use(routers);
