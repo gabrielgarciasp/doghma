@@ -2,7 +2,7 @@ const pool = require('./../config/database');
 
 const getAllProjects = async () => {
     const conn = await pool.getConnection();
-    const [rows, fields] = await conn.execute('select * from projects');
+    const [rows] = await conn.execute('select * from projects');
 
     conn.release();
 
@@ -11,7 +11,7 @@ const getAllProjects = async () => {
 
 const getProject = async id => {
     const conn = await pool.getConnection();
-    const [rows, fields] = await conn.execute('select * from projects where id = ?', [id]);
+    const [rows] = await conn.execute('select * from projects where id = ?', [id]);
 
     conn.release();
 

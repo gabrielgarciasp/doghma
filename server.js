@@ -12,14 +12,9 @@ const app = express();
 //     next()
 // })
 
-app.use(
-    cors({
-        exposedHeaders: ['Content-Range', 'X-Content-Range', 'X-Total-Count'],
-        credentials: true,
-    })
-); // liberar acesso
-// app.use(helmet()); // cuidar dos headers
+app.use(cors()); // liberar acesso
+app.use(helmet()); // cuidar dos headers
 app.use(bodyParser.urlencoded({ extended: false })); // transformar o body
 app.use(routers);
 
-app.listen(process.env.PORT || 3000, () => console.log('App running'));
+app.listen(process.env.PORT || 3001, () => console.log('App running'));

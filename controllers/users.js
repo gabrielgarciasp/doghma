@@ -3,6 +3,9 @@ const model = require('./../models/users');
 const getAllUsers = async (req, res) => {
     const result = await model.getAllUsers();
 
+    res.setHeader('X-Total-Count', result.length);
+    res.setHeader('Access-Control-Expose-Headers', 'X-Total-Count');
+
     res.json({ data: result });
 };
 
