@@ -10,4 +10,14 @@ const pool = mysql.createPool({
     queueLimit: 0,
 });
 
+// const pool = mysql.createPool({
+//     host: 'localhost',
+//     user: 'root',
+//     database: 'doghma',
+//     password: '',
+//     waitForConnections: true,
+//     connectionLimit: 10,
+//     queueLimit: 0,
+// });
+
 module.exports = pool;

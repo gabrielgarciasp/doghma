@@ -3,13 +3,16 @@ const model = require('./../models/projects');
 const getAllProjects = async (req, res) => {
     const result = await model.getAllProjects();
 
-    res.json({ data: result });
+    res.setHeader('X-Total-Count', result.length);
+    res.setHeader('Access-Control-Expose-Headers', 'X-Total-Count');
+
+    res.json(result);
 };
 
 const getProject = async (req, res) => {
     const result = await model.getProject(req.params.id);
 
-    res.json({ data: result });
+    res.json(result);
 };
 
 const createProject = async (req, res) => {
@@ -19,7 +22,7 @@ const createProject = async (req, res) => {
 
     const result = await model.createProject(req.body);
 
-    res.json({ data: result });
+    res.json(result);
 };
 
 const updateProject = async (req, res) => {
@@ -29,13 +32,13 @@ const updateProject = async (req, res) => {
 
     const result = await model.updateProject(req.params.id, req.body);
 
-    res.json({ data: result });
+    res.json(result);
 };
 
 const deleteProject = async (req, res) => {
     const result = await model.deleteProject(req.params.id);
 
-    res.json({ data: result });
+    res.json(result);
 };
 
 module.exports = { getAllProjects, getProject, createProject, updateProject, deleteProject };
