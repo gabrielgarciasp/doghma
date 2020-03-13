@@ -1,7 +1,5 @@
 const jwtHelper = require('./../helpers/jwt');
 
-const authConfiguration = require('./../config/auth.json');
-
 module.exports = (req, res, next) => {
     const authHeader = req.headers.authorization;
 
@@ -24,7 +22,7 @@ module.exports = (req, res, next) => {
         return;
     }
 
-    jwtHelper.verify(token, authConfiguration.secret, (err, decoded) => {
+    jwtHelper.verify(token, process.env.JWT_SECRET, (err, decoded) => {
         if (err) {
             res.status(401).json({ error: 'Token invalid' });
             return;

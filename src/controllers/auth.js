@@ -4,9 +4,9 @@ const userModel = require('./../models/users');
 const jwtHelper = require('./../helpers/jwt');
 
 const authenticate = async (req, res) => {
-    const user = await userModel.getUserEmail(req.body.email);
+    const user = await userModel.getUserByEmail(req.body.email);
 
-    if (!user[0]) {
+    if (!user) {
         res.status(400).json({ error: 'User not found' });
         return;
     }
@@ -16,16 +16,18 @@ const authenticate = async (req, res) => {
         return;
     }
 
-    if (!(await bcrypt.compare(req.body.password, user[0].password))) {
+    if (!(await bcrypt.compare(req.body.password, user.password))) {
         res.status(400).json({ error: 'Invalid password' });
         return;
     }
 
-    const token = jwtHelper.generateToken({ id: user[0].id });
+    const token = jwtHelper.generateToken({ id: user.id });
 
-    delete user[0].password;
+    // res.json({ user: { ...user, password: undefined }, token });
 
-    res.json({ user: user[0], token });
+    delete user.password;
+
+    res.json({ user: user, token });
 };
 
 module.exports = { authenticate };
