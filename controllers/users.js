@@ -6,7 +6,8 @@ const getAllUsers = async (req, res) => {
     res.setHeader('X-Total-Count', result.length);
     res.setHeader('Access-Control-Expose-Headers', 'X-Total-Count');
 
-    res.json({ data: result });
+    // res.json({ data: result });
+    res.json(result);
 };
 
 const getUser = async (req, res) => {
