@@ -1,10 +1,12 @@
 const { Router } = require('express');
 const router = Router();
 
+const auth = require('./auth');
 const user = require('./users');
 const client = require('./clients');
 const project = require('./projects');
 
+router.use('/authenticate', auth);
 router.use('/users', user);
 router.use('/clients', client);
 router.use('/projects', project);

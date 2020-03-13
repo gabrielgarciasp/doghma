@@ -2,11 +2,9 @@ const { Router } = require('express');
 const router = Router();
 
 const controller = require('./../controllers/users');
+const authMiddleware = require('./../middleware/auth');
 
-// router.use(function timeLog(req, res, next) {
-//     // posso colocar um middleware
-//     next();
-// });
+router.use(authMiddleware);
 
 router.get('/', controller.getAllUsers);
 

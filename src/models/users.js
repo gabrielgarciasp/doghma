@@ -18,6 +18,15 @@ const getUser = async id => {
     return rows;
 };
 
+const getUserEmail = async email => {
+    const conn = await pool.getConnection();
+    const [rows] = await conn.execute('select * from users where email = ?', [email]);
+
+    conn.release();
+
+    return rows;
+};
+
 const createUser = async data => {
     const conn = await pool.getConnection();
     const [rows] = await conn.execute('insert into users(name, email, password) values(?, ?, ?)', [
@@ -54,4 +63,4 @@ const deleteUser = async id => {
     return { message: 'deleted' };
 };
 
-module.exports = { getAllUsers, getUser, createUser, updateUser, deleteUser };
+module.exports = { getAllUsers, getUser, getUserEmail, createUser, updateUser, deleteUser };
