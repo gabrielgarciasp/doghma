@@ -4,16 +4,14 @@ const router = Router();
 const controller = require('./../controllers/users');
 const authMiddleware = require('./../middleware/auth');
 
-router.use(authMiddleware);
+router.get('/', authMiddleware, controller.getAllUsers);
 
-router.get('/', controller.getAllUsers);
-
-router.get('/:id', controller.getUser);
+router.get('/:id', authMiddleware, controller.getUser);
 
 router.post('/', controller.createUser);
 
-router.put('/:id', controller.updateUser);
+router.put('/:id', authMiddleware, controller.updateUser);
 
-router.delete('/:id', controller.deleteUser);
+router.delete('/:id', authMiddleware, controller.deleteUser);
 
 module.exports = router;

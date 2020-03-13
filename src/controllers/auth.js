@@ -1,3 +1,5 @@
+const bcrypt = require('bcrypt');
+
 const userModel = require('./../models/users');
 const jwtHelper = require('./../helpers/jwt');
 
@@ -14,12 +16,14 @@ const authenticate = async (req, res) => {
         return;
     }
 
-    if (user[0].password !== req.body.password) {
+    if (!(await bcrypt.compare(req.body.password, user[0].password))) {
         res.status(400).json({ error: 'Invalid password' });
         return;
     }
 
     const token = jwtHelper.generateToken({ id: user[0].id });
+
+    delete user[0].password;
 
     res.json({ user: user[0], token });
 };
