@@ -15,7 +15,7 @@ const getClient = async id => {
 
     conn.release();
 
-    return rows;
+    return rows[0];
 };
 
 const createClient = async data => {

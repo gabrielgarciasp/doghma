@@ -3,9 +3,6 @@ const model = require('./../models/projects');
 const getAllProjects = async (req, res) => {
     const result = await model.getAllProjects();
 
-    res.setHeader('X-Total-Count', result.length);
-    res.setHeader('Access-Control-Expose-Headers', 'X-Total-Count');
-
     res.json(result);
 };
 

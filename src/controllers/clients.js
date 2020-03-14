@@ -3,9 +3,6 @@ const model = require('./../models/clients');
 const getAllClients = async (req, res) => {
     const result = await model.getAllClients();
 
-    res.setHeader('X-Total-Count', result.length);
-    res.setHeader('Access-Control-Expose-Headers', 'X-Total-Count');
-
     res.json(result);
 };
 

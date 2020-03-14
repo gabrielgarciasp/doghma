@@ -15,7 +15,7 @@ const getProject = async id => {
 
     conn.release();
 
-    return rows;
+    return rows[0];
 };
 
 const createProject = async data => {

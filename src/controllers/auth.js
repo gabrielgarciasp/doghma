@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const userModel = require('./../models/users');
-const jwtHelper = require('./../helpers/jwt');
 
 const authenticate = async (req, res) => {
     const user = await userModel.getUserByEmail(req.body.email);
@@ -21,7 +21,7 @@ const authenticate = async (req, res) => {
         return;
     }
 
-    const token = jwtHelper.generateToken({ id: user.id });
+    const token = jwt.generateToken({ id: user.id }, process.env.JWT_SECRET, { expiresIn: 86400 });
 
     // res.json({ user: { ...user, password: undefined }, token });
 

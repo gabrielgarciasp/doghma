@@ -17,7 +17,7 @@ const getUser = async id => {
 
     conn.release();
 
-    return rows;
+    return rows[0];
 };
 
 const getUserByEmail = async email => {
