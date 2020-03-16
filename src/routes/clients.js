@@ -6,14 +6,14 @@ const authMiddleware = require('./../middleware/auth');
 
 router.use(authMiddleware);
 
-router.get('/', controller.getAllClients);
+router.get('/', controller.index);
 
-router.get('/:id', controller.getClient);
+router.get('/:id', controller.show);
 
-router.post('/', controller.createClient);
+router.post('/', controller.store);
 
-router.put('/:id', controller.updateClient);
+router.put('/:id', controller.update);
 
-router.delete('/:id', controller.deleteClient);
+router.delete('/:id', controller.destroy);
 
 module.exports = router;

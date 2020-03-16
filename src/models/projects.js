@@ -1,6 +1,6 @@
 const pool = require('./../config/database');
 
-const getAllProjects = async () => {
+const index = async () => {
     const conn = await pool.getConnection();
     const [rows] = await conn.execute('select * from projects');
 
@@ -9,7 +9,7 @@ const getAllProjects = async () => {
     return rows;
 };
 
-const getProject = async id => {
+const show = async id => {
     const conn = await pool.getConnection();
     const [rows] = await conn.execute('select * from projects where id = ?', [id]);
 
@@ -18,7 +18,7 @@ const getProject = async id => {
     return rows[0];
 };
 
-const createProject = async data => {
+const store = async data => {
     const conn = await pool.getConnection();
     const [
         rows,
@@ -53,10 +53,10 @@ const createProject = async data => {
 
     conn.release();
 
-    return getProject(rows.insertId);
+    return show(rows.insertId);
 };
 
-const updateProject = async (id, data) => {
+const update = async (id, data) => {
     const conn = await pool.getConnection();
     const [
         rows,
@@ -92,10 +92,10 @@ const updateProject = async (id, data) => {
 
     conn.release();
 
-    return getProject(id);
+    return show(id);
 };
 
-const deleteProject = async id => {
+const destroy = async id => {
     const conn = await pool.getConnection();
     const [rows] = await conn.execute('delete from projects where id=?', [id]);
 
@@ -104,4 +104,13 @@ const deleteProject = async id => {
     return { message: 'deleted' };
 };
 
-module.exports = { getAllProjects, getProject, createProject, updateProject, deleteProject };
+const getAllProjectsOfClient = async clientId => {
+    const conn = await pool.getConnection();
+    const [rows] = await conn.execute('select * from projects where client_id = ?', [clientId]);
+
+    conn.release();
+
+    return rows;
+};
+
+module.exports = { index, show, store, update, destroy, getAllProjectsOfClient };

@@ -1,33 +1,123 @@
+const joi = require('@hapi/joi');
+
 const model = require('./../models/users');
 
-const getAllUsers = async (req, res) => {
-    const result = await model.getAllUsers();
+const index = async (req, res) => {
+    const result = await model.index();
 
     res.json(result);
 };
 
-const getUser = async (req, res) => {
-    const result = await model.getUser(req.params.id);
+const show = async (req, res) => {
+    const schema = await joi.object({
+        id: joi
+            .number()
+            .integer()
+            .required(),
+    });
+
+    const { error, value } = schema.validate(req.params);
+
+    if (error) {
+        res.status(400).json({ error: error.details[0].message });
+        return;
+    }
+
+    const result = await model.show(req.params.id);
+
+    if (!result) {
+        res.json({ error: 'User not found' });
+        return;
+    }
+
+    res.json({ result });
+};
+
+const store = async (req, res) => {
+    const schema = await joi.object({
+        name: joi
+            .string()
+            .max(100)
+            .required(),
+        email: joi
+            .string()
+            .email()
+            .max(100)
+            .required(),
+        password: joi
+            .string()
+            .max(100)
+            .required(),
+    });
+
+    const { error, value } = schema.validate(req.body);
+
+    if (error) {
+        res.status(400).json({ error: error.details[0].message });
+        return;
+    }
+
+    const result = await model.store(req.body);
 
     res.json(result);
 };
 
-const createUser = async (req, res) => {
-    const result = await model.createUser(req.body);
+const update = async (req, res) => {
+    const schema = await joi.object({
+        id: joi
+            .number()
+            .integer()
+            .required(),
+        name: joi
+            .string()
+            .max(100)
+            .required(),
+        email: joi
+            .string()
+            .email()
+            .max(100)
+            .required(),
+        password: joi
+            .string()
+            .max(100)
+            .required(),
+    });
+
+    const { error, value } = schema.validate({ ...req.params, ...req.body });
+
+    if (error) {
+        res.status(400).json({ error: error.details[0].message });
+        return;
+    }
+
+    const result = await model.update(req.params.id, req.body);
+
+    if (!result) {
+        res.json({ error: 'User not found' });
+        return;
+    }
 
     res.json(result);
 };
 
-const updateUser = async (req, res) => {
-    const result = await model.updateUser(req.params.id, req.body);
+const destroy = async (req, res) => {
+    const schema = await joi.object({
+        id: joi
+            .number()
+            .integer()
+            .required(),
+    });
+
+    const { error, value } = schema.validate(req.params);
+
+    if (error) {
+        res.status(400).json({ error: error.details[0].message });
+        return;
+    }
+
+    const result = await model.destroy(req.params.id);
 
     res.json(result);
 };
 
-const deleteUser = async (req, res) => {
-    const result = await model.deleteUser(req.params.id);
-
-    res.json(result);
-};
-
-module.exports = { getAllUsers, getUser, createUser, updateUser, deleteUser };
+module.exports = { index, show, store, update, destroy };

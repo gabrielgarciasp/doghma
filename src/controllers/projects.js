@@ -1,41 +1,57 @@
 const model = require('./../models/projects');
 
-const getAllProjects = async (req, res) => {
-    const result = await model.getAllProjects();
+const index = async (req, res) => {
+    const result = await model.index();
 
     res.json(result);
 };
 
-const getProject = async (req, res) => {
-    const result = await model.getProject(req.params.id);
+const show = async (req, res) => {
+    const result = await model.show(req.params.id);
+
+    if (!result) {
+        res.json({ error: 'Project not found' });
+        return;
+    }
 
     res.json(result);
 };
 
-const createProject = async (req, res) => {
+const store = async (req, res) => {
     // validations
     req.body.active = req.body.active == 'true' ? 1 : 0;
     req.body.email_aborted = req.body.email_aborted == 'true' ? 1 : 0;
 
-    const result = await model.createProject(req.body);
+    const result = await model.store(req.body);
 
     res.json(result);
 };
 
-const updateProject = async (req, res) => {
+const update = async (req, res) => {
     // validations
     req.body.active = req.body.active == 'true' ? 1 : 0;
     req.body.email_aborted = req.body.email_aborted == 'true' ? 1 : 0;
 
-    const result = await model.updateProject(req.params.id, req.body);
+    const result = await model.update(req.params.id, req.body);
+
+    if (!result) {
+        res.json({ error: 'Project not found' });
+        return;
+    }
 
     res.json(result);
 };
 
-const deleteProject = async (req, res) => {
-    const result = await model.deleteProject(req.params.id);
+const destroy = async (req, res) => {
+    const result = await model.destroy(req.params.id);
 
     res.json(result);
 };
 
-module.exports = { getAllProjects, getProject, createProject, updateProject, deleteProject };
+const getAllProjectsOfClient = async (req, res) => {
+    const result = await model.getAllProjectsOfClient(req.params.clientId);
+
+    res.json(result);
+};
+
+module.exports = { index, show, store, update, destroy, getAllProjectsOfClient };

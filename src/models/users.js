@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 
 const pool = require('./../config/database');
 
-const getAllUsers = async () => {
+const index = async () => {
     const conn = await pool.getConnection();
     const [rows] = await conn.execute('select id, name, email, created_at, updated_at from users');
 
@@ -11,7 +11,7 @@ const getAllUsers = async () => {
     return rows;
 };
 
-const getUser = async id => {
+const show = async id => {
     const conn = await pool.getConnection();
     const [rows] = await conn.execute('select id, name, email, created_at, updated_at from users where id = ?', [id]);
 
@@ -20,16 +20,7 @@ const getUser = async id => {
     return rows[0];
 };
 
-const getUserByEmail = async email => {
-    const conn = await pool.getConnection();
-    const [rows] = await conn.execute('select * from users where email = ?', [email]);
-
-    conn.release();
-
-    return rows[0];
-};
-
-const createUser = async data => {
+const store = async data => {
     const hash = await bcrypt.hash(data.password, 10);
     data.password = hash;
 
@@ -42,10 +33,10 @@ const createUser = async data => {
 
     conn.release();
 
-    return getUser(rows.insertId);
+    return show(rows.insertId);
 };
 
-const updateUser = async (id, data) => {
+const update = async (id, data) => {
     const hash = await bcrypt.hash(data.password, 10);
     data.password = hash;
 
@@ -59,10 +50,10 @@ const updateUser = async (id, data) => {
 
     conn.release();
 
-    return getUser(id);
+    return show(id);
 };
 
-const deleteUser = async id => {
+const destroy = async id => {
     const conn = await pool.getConnection();
     const [rows] = await conn.execute('delete from users where id=?', [id]);
 
@@ -71,4 +62,13 @@ const deleteUser = async id => {
     return { message: 'deleted' };
 };
 
-module.exports = { getAllUsers, getUser, getUserByEmail, createUser, updateUser, deleteUser };
+const getUserByEmail = async email => {
+    const conn = await pool.getConnection();
+    const [rows] = await conn.execute('select * from users where email = ?', [email]);
+
+    conn.release();
+
+    return rows[0];
+};
+
+module.exports = { index, show, store, update, destroy, getUserByEmail };

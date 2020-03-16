@@ -1,6 +1,6 @@
 const pool = require('./../config/database');
 
-const getAllClients = async () => {
+const index = async () => {
     const conn = await pool.getConnection();
     const [rows] = await conn.execute('select * from clients');
 
@@ -9,7 +9,7 @@ const getAllClients = async () => {
     return rows;
 };
 
-const getClient = async id => {
+const show = async id => {
     const conn = await pool.getConnection();
     const [rows] = await conn.execute('select * from clients where id = ?', [id]);
 
@@ -18,7 +18,7 @@ const getClient = async id => {
     return rows[0];
 };
 
-const createClient = async data => {
+const store = async data => {
     const conn = await pool.getConnection();
     const [
         rows,
@@ -29,10 +29,10 @@ const createClient = async data => {
 
     conn.release();
 
-    return getClient(rows.insertId);
+    return show(rows.insertId);
 };
 
-const updateClient = async (id, data) => {
+const update = async (id, data) => {
     const conn = await pool.getConnection();
     const [
         rows,
@@ -43,10 +43,10 @@ const updateClient = async (id, data) => {
 
     conn.release();
 
-    return getClient(id);
+    return show(id);
 };
 
-const deleteClient = async id => {
+const destroy = async id => {
     const conn = await pool.getConnection();
     const [rows] = await conn.execute('delete from clients where id=?', [id]);
 
@@ -55,4 +55,4 @@ const deleteClient = async id => {
     return { message: 'deleted' };
 };
 
-module.exports = { getAllClients, getClient, createClient, updateClient, deleteClient };
+module.exports = { index, show, store, update, destroy };
